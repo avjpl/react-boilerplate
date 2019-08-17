@@ -43,9 +43,8 @@ module.exports = merge([
           modules: {
             localIdentName: '[name]__[local]--[hash:base64:5]',
             hashPrefix: 'hash',
-
           },
-          localsConvention: 'camelCase'
+          localsConvention: 'camelCaseOnly',
         },
       },
       'postcss-loader',

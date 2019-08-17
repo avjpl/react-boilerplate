@@ -1,10 +1,28 @@
 import React, { useEffect } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import styles from './Home.css';
+import StatusIndicator from './StatusIndicator';
 
-const query = gql`
+const SUBSCRIPTION = gql`
+  subscription {
+    liftStatusChange {
+      id
+      status
+    }
+  }
+`;
+
+const MUTATION = gql`
+  mutation SetLiftStatus($id: ID!, $status: LiftStatus!) {
+    setLiftStatus(id: $id, status: $status) {
+      id
+      status
+    }
+  }
+`;
+
+const QUERY = gql`
   query {
     allLifts {
       id
@@ -20,7 +38,9 @@ const Home = () => {
     document.title = 'Skeleton';
   }), [];
 
-  const { loading, data } = useQuery(query);
+  const { loading, data } = useQuery(QUERY);
+  const [ setLiftStatus ] = useMutation(MUTATION);
+  useSubscription(SUBSCRIPTION);
 
   if (loading) return <h3>Loading...</h3>
 
@@ -34,11 +54,20 @@ const Home = () => {
             <th>Current Status</th>
           </tr>
         </thead>
+
         <tbody>
           {data.allLifts.map(lift => (
             <tr key={lift.id}>
               <td>{lift.name}</td>
-              <td>{lift.status}</td>
+              <td>
+                <StatusIndicator
+                  status={lift.status}
+                  onChange={status => {
+                    const variables = { id: lift.id, status };
+                    setLiftStatus({ variables });
+                  }}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
