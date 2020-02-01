@@ -4,7 +4,7 @@ import Image from './Image';
 import Video from './Video';
 
 const Gallery = ({ children }) => {
-  const [type, setType] = useState('Image')
+  const [type, setType] = useState('Image');
 
   return (
     <div>

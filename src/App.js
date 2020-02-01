@@ -1,7 +1,6 @@
 import '@babel/polyfill';
 import React, { Fragment } from 'react';
 
-
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
