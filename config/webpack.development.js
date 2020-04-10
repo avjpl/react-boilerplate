@@ -33,6 +33,7 @@ module.exports = merge([
     name: 'fonts/[name].[hash:4].[ext]',
   }),
   loadCSS({
+    exclude: /carousel\.css/,
     use: [
       'style-loader',
       {
@@ -49,6 +50,13 @@ module.exports = merge([
         },
       },
       'postcss-loader',
+    ],
+  }),
+  loadCSS({
+    include: /carousel\.css/,
+    use: [
+      'style-loader',
+      'postcss-loader'
     ],
   }),
   loadImages(),

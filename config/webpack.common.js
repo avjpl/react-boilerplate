@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -13,6 +14,11 @@ module.exports = mode => merge([
         title: 'Webpack demo',
         template: 'web/index.html',
       }),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+      })
     ],
   },
   loadSvg(),

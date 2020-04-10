@@ -6,7 +6,8 @@
     "start": "webpack-dev-server --env development",
     "build": "webpack --env production",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "serve": "live-server --port=9999 ./dist"
   },
   "license": "MIT",
   "dependencies": {
@@ -25,6 +26,8 @@
     "react": "^16.13.1",
     "react-apollo": "^3.1.4",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.0.0",
+    "react-responsive-carousel": "^3.1.57",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
     "react-svg-inline": "^2.1.1",
@@ -56,6 +59,7 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.2.0",
+    "live-server": "^1.2.1",
     "mini-css-extract-plugin": "^0.9.0",
     "nodemon": "^2.0.3",
     "postcss": "^7.0.27",
