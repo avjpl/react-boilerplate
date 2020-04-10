@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+// import '@babel/polyfill';
 import React, { Fragment } from 'react';
 
 import ApolloClient from 'apollo-client';
