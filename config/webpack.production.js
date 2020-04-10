@@ -23,6 +23,7 @@ module.exports = merge([
     ],
   },
   extractCSS({
+    exclude: /carousel\.css/,
     use: [
       MiniCssExtractPlugin.loader,
       {
@@ -38,6 +39,14 @@ module.exports = merge([
           localsConvention: 'camelCase'
         },
       },
+      'postcss-loader',
+    ],
+  }),
+  extractCSS({
+    include: /carousel\.css/,
+    use: [
+      MiniCssExtractPlugin.loader,
+      { loader: 'css-loader', },
       'postcss-loader',
     ],
   }),

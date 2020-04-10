@@ -1,78 +1,107 @@
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const merge = require('webpack-merge');
 
-const {
-  extractCSS,
-  loadImages,
-  loadFonts,
-} = require('./webpack.parts');
+exports.devServer = ({ host, port } = {}) => ({
+  devServer: {
+    historyApiFallback: true,
+    stats: 'errors-only',
+    host, // Defaults to `localhost`
+    port, // Defaults to 8080
+    overlay: true,
+    hotOnly: true,
+  },
+});
 
-module.exports = merge([
-  {
-    output: {
-      chunkFilename: "[name].[chunkhash:4].js",
-      filename: "[name].[chunkhash:4].js",
-    },
-  },
-  {
-    plugins: [
-      new webpack.NormalModuleReplacementPlugin(/(.*)syncRoutes(\.*)/, resource => {
-        resource.request = resource.request.replace(/syncRoutes/, 'asyncRoutes');
-      })
-    ],
-  },
-  extractCSS({
-    exclude: /carousel\.css/,
-    use: [
-      MiniCssExtractPlugin.loader,
+exports.loadCSS = ({ include, exclude, use } = {}) => ({
+  module: {
+    rules: [
       {
-        loader: 'css-loader',
-        options: {
-          importLoaders: 1,
-          sourceMap: true,
-          modules: {
-            localIdentName: '[name]__[local]--[hash:base64:5]',
-            hashPrefix: 'hash',
-
-          },
-          localsConvention: 'camelCase'
-        },
+        test: /\.css$/,
+        include,
+        exclude,
+        use,
       },
-      'postcss-loader',
     ],
-  }),
-  extractCSS({
-    include: /carousel\.css/,
-    use: [
-      MiniCssExtractPlugin.loader,
-      { loader: 'css-loader', },
-      'postcss-loader',
-    ],
-  }),
-  loadImages({
-    options: {
-      limit: 35000,
-      name: '[name].[hash:4].[ext]',
-    },
-  }),
-  loadFonts({
-    name: 'fonts/[name].[hash:4].[ext]',
-  }),
-  {
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            chunks: 'initial',
-          },
-        },
-      },
-      runtimeChunk: {
-        name: 'runtime'
-      },
-    },
   },
-]);
+});
+
+exports.extractCSS = ({ include, exclude, use } = {}) => {
+  const plugin = new MiniCssExtractPlugin({
+    filename: '[name].[contenthash:4].css',
+    chunkFilename: '[id].[contenthash:4].css',
+  });
+  return {
+    module: {
+      rules: [
+        {
+          test: /\.css$/,
+          include,
+          exclude,
+          use,
+        },
+      ],
+    },
+    plugins: [plugin],
+  };
+};
+
+exports.loadImages = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg)$/,
+        include,
+        exclude,
+        use: {
+          loader: 'url-loader',
+          options,
+        },
+      },
+    ],
+  },
+});
+
+exports.loadSvg = () => ({
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+        use: 'raw-loader',
+      },
+    ],
+  },
+});
+
+exports.loadFonts = ({ options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: 'file-loader',
+        options,
+      },
+    ],
+  },
+});
+
+exports.loadJavaScript = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include,
+        exclude,
+        use: 'babel-loader',
+      },
+    ],
+  },
+});
+
+exports.generateSourceMaps = ({ type }) => ({
+  devtool: type,
+});
+
+exports.logger = (a, b) => {
+  console.log(`Logger: ${a} -> ${b}`); // eslint-disable-line
+
+  return {};
+};
