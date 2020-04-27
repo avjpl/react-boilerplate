@@ -1,17 +1,17 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-exports.devServer = ({ host, port } = {}) => ({
+exports.devServer = ({ host, port }) => ({
   devServer: {
-    historyApiFallback: true,
-    stats: 'errors-only',
-    host, // Defaults to `localhost`
-    port, // Defaults to 8080
+    host,
+    port,
     overlay: true,
     hotOnly: true,
+    stats: 'errors-only',
+    historyApiFallback: true,
   },
 });
 
-exports.loadCSS = ({ include, exclude, use } = {}) => ({
+exports.loadCSS = ({ include, exclude, use }) => ({
   module: {
     rules: [
       {
@@ -24,7 +24,7 @@ exports.loadCSS = ({ include, exclude, use } = {}) => ({
   },
 });
 
-exports.extractCSS = ({ include, exclude, use } = {}) => {
+exports.extractCSS = ({ include, exclude, use }) => {
   const plugin = new MiniCssExtractPlugin({
     filename: '[name].[contenthash:4].css',
     chunkFilename: '[id].[contenthash:4].css',
@@ -71,7 +71,7 @@ exports.loadSvg = () => ({
   },
 });
 
-exports.loadFonts = ({ options } = {}) => ({
+exports.loadFonts = ({ options }) => ({
   module: {
     rules: [
       {
@@ -83,14 +83,20 @@ exports.loadFonts = ({ options } = {}) => ({
   },
 });
 
-exports.loadJavaScript = ({ include, exclude } = {}) => ({
+exports.loadJavaScript = ({ include, exclude }) => ({
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
         include,
         exclude,
-        use: 'babel-loader',
+        use: 'ts-loader',
+        // use: 'awesome-typescript-loader',
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
       },
     ],
   },

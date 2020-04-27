@@ -1,4 +1,4 @@
-// import '@babel/polyfill';
+import { hot } from 'react-hot-loader/root';
 import React, { Fragment } from 'react';
 
 import ApolloClient from 'apollo-client';
@@ -47,4 +47,4 @@ const App = () => (
   </ApolloProvider>
 );
 
-export default App;
+export default hot(App);

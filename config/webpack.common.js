@@ -7,22 +7,30 @@ const {
   loadSvg,
 } = require('./webpack.parts');
 
-module.exports = mode => merge([
-  {
-    plugins: [
-      new HtmlWebpackPlugin({
-        title: 'Webpack demo',
-        template: 'web/index.html',
-      }),
-      new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'window.jQuery': 'jquery'
-      })
-    ],
-  },
-  loadSvg(),
-  loadJavaScript({
-    ...(mode === 'production' ? { exclude: /node_modules/ } : {}),
-  }),
-]);
+module.exports = (mode) =>
+  merge([
+    {
+      entry: './src/index.tsx',
+      plugins: [
+        new HtmlWebpackPlugin({
+          title: 'Webpack demo',
+          template: 'web/index.html',
+        }),
+        new webpack.ProvidePlugin({
+          $: 'jquery',
+          jQuery: 'jquery',
+          'window.jQuery': 'jquery',
+        }),
+      ],
+      resolve: {
+        extensions: ['.ts', '.tsx', '.js', '.json'],
+        alias: {
+          'react-dom': '@hot-loader/react-dom',
+        },
+      },
+    },
+    loadSvg(),
+    loadJavaScript({
+      ...(mode === 'production' ? { exclude: /node_modules/ } : {}),
+    }),
+  ]);

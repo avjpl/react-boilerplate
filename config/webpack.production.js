@@ -11,8 +11,8 @@ const {
 module.exports = merge([
   {
     output: {
-      chunkFilename: "[name].[chunkhash:4].js",
-      filename: "[name].[chunkhash:4].js",
+      chunkFilename: '[name].[chunkhash:4].js',
+      filename: '[name].[chunkhash:4].js',
     },
   },
   {

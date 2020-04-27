@@ -1,13 +1,13 @@
 import React from 'react';
 
-const AsyncComponent = getComponent => {
+const AsyncComponent = (getComponent: any) => {
   return class AsyncComponent extends React.Component {
-    static Component = null;
+    static Component: undefined = null;
     state = { Component: AsyncComponent.Component };
 
     UNSAFE_componentWillMount() {
       if (!this.state.Component) {
-        getComponent().then(({ default: Component }) => {
+        getComponent().then(({ default: Component }: { default: any }) => {
           AsyncComponent.Component = Component;
           this.setState({ Component });
         });
@@ -15,7 +15,7 @@ const AsyncComponent = getComponent => {
     }
 
     render() {
-      const { Component } = this.state;
+      const { Component }: { Component: any } = this.state;
 
       if (Component) {
         return <Component {...this.props} />;

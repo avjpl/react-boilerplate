@@ -8,9 +8,10 @@ import google from '../../web/images/icons/google.svg';
 import instagram from '../../web/images/icons/instagram.svg';
 import linkedin from '../../web/images/icons/linkedin.svg';
 import twitter from '../../web/images/icons/twitter.svg';
+
 import styles from './SVGIcon.css';
 
-const iconMap = {
+const iconMap: { [index: string]: any } = {
   facebook,
   github,
   google,
@@ -19,11 +20,11 @@ const iconMap = {
   twitter,
 };
 
-const SVGIcon = ({ icon, className }) => {
+const SVGIcon = ({ icon, className }: { icon: any, className: any }) => {
   return (
     <SVGInline
-      svg={ iconMap[icon] }
-      component='div'
+      svg={iconMap[icon]}
+      component="div"
       className={objstr({
         [styles.icon]: true,
         [className]: true,

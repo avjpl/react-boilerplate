@@ -14,9 +14,10 @@ const { PORT } = require('./webpack.constants');
 
 module.exports = merge([
   {
+    devtool: 'source-map',
     plugins: [
       new Jarvis({
-        port: 1337 // optional: set a port
+        port: 1337, // optional: set a port
       }),
     ],
   },
@@ -25,9 +26,7 @@ module.exports = merge([
     port: process.env.PORT || PORT,
   }),
   {
-    plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-    ],
+    plugins: [new webpack.HotModuleReplacementPlugin()],
   },
   loadFonts({
     name: 'fonts/[name].[hash:4].[ext]',
@@ -44,9 +43,8 @@ module.exports = merge([
           modules: {
             localIdentName: '[name]__[local]--[hash:base64:5]',
             hashPrefix: 'hash',
-
           },
-          localsConvention: 'camelCase'
+          localsConvention: 'camelCase',
         },
       },
       'postcss-loader',
@@ -54,10 +52,7 @@ module.exports = merge([
   }),
   loadCSS({
     include: /carousel\.css/,
-    use: [
-      'style-loader',
-      'postcss-loader'
-    ],
+    use: ['style-loader', 'postcss-loader'],
   }),
   loadImages(),
   generateSourceMaps({ type: 'cheap-module-source-map' }),
